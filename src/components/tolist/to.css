@@ -1,0 +1,17 @@
+.todo-list {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.filters {
+    margin: 20px 0;
+}
+
+.filters label {
+    margin-right: 10px;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
