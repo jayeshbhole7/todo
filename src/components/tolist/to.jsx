@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TaskInput from '../taskInput/taskInput';
 import ToDoItem from '../toDo/toDo';
 import './to.css';
@@ -7,13 +7,24 @@ function ToDoList() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('all');
 
+  const saveTasksToLocalStorage = useCallback(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
   useEffect(() => {
-    loadTasksFromLocalStorage();
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (savedTasks) {
+      setTasks(savedTasks);
+    }
   }, []);
+
+  // useEffect(() => {
+  //   loadTasksFromLocalStorage();
+  // }, []);
 
   useEffect(() => {
     saveTasksToLocalStorage();
-  }, [tasks]);
+  }, [tasks, saveTasksToLocalStorage]);
 
   const addTask = (text) => {
     const newTask = {
@@ -46,17 +57,6 @@ function ToDoList() {
         return tasks.filter(task => !task.completed);
       default:
         return tasks;
-    }
-  };
-
-  const saveTasksToLocalStorage = () => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  };
-
-  const loadTasksFromLocalStorage = () => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (savedTasks) {
-      setTasks(savedTasks);
     }
   };
 
